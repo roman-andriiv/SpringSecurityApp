@@ -7,6 +7,8 @@
 <body>
  Hello World!
  <br>
- <a href="/logout"><button>Log out</button></a>
+ <form th:action="@{/logout}" th:method="POST">
+     <input type="submit" value="Logout"/>
+ </form>
 </body>
 </html>
