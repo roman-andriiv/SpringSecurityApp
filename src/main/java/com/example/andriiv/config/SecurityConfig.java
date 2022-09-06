@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //configure authorization
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "auth/registration", "/error").permitAll()
+                .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
@@ -47,11 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //configure authentication
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService);
+        auth.userDetailsService(personDetailsService)
+                .passwordEncoder(getPasswordEncoder());
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
