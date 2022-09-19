@@ -12,7 +12,6 @@ import java.util.Collections;
  * @author Roman_Andriiv
  */
 public class PersonDetails implements UserDetails {
-
     private final Person person;
 
     public PersonDetails(Person person) {
